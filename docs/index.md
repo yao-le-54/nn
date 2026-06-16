@@ -68,7 +68,9 @@ title: 主页
 - [__基于自监督学习与PPO强化学习的自动驾驶仿真项目__](./autonomous_driving/README.md) - 基于CARLA的SSL+RL自动驾驶仿真系统
 - [__CARLA天气鲁棒性测试__](./carla_weather_robustness/README.md) - CARLA多天气条件下自动驾驶感知鲁棒性测试系统
 - [__CARLA 模拟器中的物体与碰撞检测系统__](./carla_collision_detect/carla_collision_detect.md) - 物体与碰撞检测
-  
+- [__car_navigation_system__](./car_navigation_system/README.md) - 多模态CARLA导航避障系统
+- [__CARLA 多传感器自动驾驶仿真平台__](./carla_multisensor_platform/carla_multisensor_platform.md) - 基于CARLA 0.9.15构建的多传感器融合自动驾驶仿真与数据采集平台
+
 ## 规划 <span id="planning"></span>
 
 [__导航__](#navigation)
@@ -105,9 +107,14 @@ title: 主页
 
 [__PilotNet自动驾驶系统__](./pilotnet/index.md) - 基于NVIDIA PilotNet架构的端到端自动驾驶学习系统
 
+[__自动驾驶车道检测与路径规划仿真平台__](./driveSim-enhanced/README.md)
 
-## 控制  <span id="control"></span>
 
+[__用户使用手势控制 Airsim 无人机__](./drone_hand_gesture/README.md) - 使用手势识别控制 Airsim 无人机飞行
+
+[__V2X路侧智能感知__](./edge_intelligence_V2X/README.md) - 基于YOLOv8n的V2X路侧智能感知系统优化与实现
+
+[__车辆自动驾驶辅助功能__](./vehicle_autonomous_core/README.md) - 基于CARLA 的多模块车辆辅助驾驶系统
 [PID](#pid)
 - [__导航__](#navigation)
 - [__自动驾驶系统__](./auto_drive_system/auto_drive_system_README) - 基于强化学习的自动驾驶系统
