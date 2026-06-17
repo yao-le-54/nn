@@ -21,12 +21,9 @@ theme:
         icon: material/brightness-4
         name: 切换暗色模式
   features:
-    - navigation.sections
-    - navigation.expand
     - navigation.top
     - search.highlight
     - content.code.copy
-    - toc.integrate
 
 extra:
   social:
@@ -47,12 +44,12 @@ markdown_extensions:
 
 nav:
   - 首页: index.md
-  - 功能实现: features/index.md
+  - 功能实现 - 概览: features/index.md
   - 相机拍照功能: features/camera.md
   - 键盘控制: features/keyboard.md
   - 航点规划: features/waypoints.md
   - API 参考: api.md
-  - 机器学习: ml/index.md
+  - 机器学习 - 概览: ml/index.md
   - 碰撞数据采集: ml/data-collection.md
   - 碰撞预测模型: ml/model.md
   - 运行步骤: quickstart.md

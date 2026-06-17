@@ -43,18 +43,3 @@ drone.capture_all_cameras()
 # 显示无人机状态
 drone.get_telemetry()
 ```
-
-## 航点规划 API
-
-```python
-from flight_path import FlightPath
-
-# 使用正方形路径
-waypoints = FlightPath.square_path(size=15, height=-3)
-
-# 使用矩形路径
-waypoints = FlightPath.rectangle_path(width=20, length=10, altitude=-3)
-
-# 使用自定义路径
-waypoints = [(5, 0, -3), (5, -5, -3), (0, -5, -3), (0, 0, -3)]
-```
