@@ -112,6 +112,7 @@ def train_avoidance_model():
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
     
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=100, gamma=0.5)
     print("   训练迭代中...")
     for epoch in range(300):
         optimizer.zero_grad()
@@ -123,9 +124,10 @@ def train_avoidance_model():
         
         loss.backward()
         optimizer.step()
+        scheduler.step()
         
         if epoch % 100 == 0:
-            print(f"   Epoch {epoch}, Loss: {loss.item():.6f}")
+            print(f"   Epoch {epoch}, Loss: {loss.item():.6f}, LR: {scheduler.get_last_lr()[0]:.6f}")
     
     # 保存模型
     torch.save(model.state_dict(), "collision_avoidance.pth")
@@ -143,8 +145,8 @@ def load_or_train_model():
         _avoidance_model.load_state_dict(torch.load("collision_avoidance.pth"))
         _avoidance_model.eval()
         print("📦 加载已有避障神经网络模型")
-    except:
-        print("⚠️  未找到已有模型，开始训练...")
+    except (FileNotFoundError, RuntimeError):
+        print("⚠️  未找到已有模型或模型加载失败，开始训练...")
         _avoidance_model = train_avoidance_model()
         _avoidance_model.eval()
     _model_trained = True
