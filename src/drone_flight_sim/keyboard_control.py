@@ -199,9 +199,11 @@ class KeyboardController:
                 self.drone.emergency_stop()
                 listener_running = False
                 return False
-            
-             # ===== 新增：Y 键显示遥测面板 =====
+
+            # 统一获取按键字符，避免重复 hasattr 调用
             key_char = key.char if hasattr(key, 'char') else None
+
+            # ===== Y 键显示遥测面板 =====
             if key_char == 'y' or key_char == 'Y':
                 self._show_telemetry_panel()
                 return
@@ -214,9 +216,6 @@ class KeyboardController:
                     self.drone.hover()
                     print("🛸 悬停")
                 return
-
-            # 获取按键字符
-            key_char = key.char if hasattr(key, 'char') else None
 
             # 拍照模式下的特殊按键
             if self.photo_mode:
