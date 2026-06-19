@@ -77,7 +77,7 @@ title: 主页
 - [__td3_carracing__](./td3_carracing/README.md) - 基于 TD3 + CNN 的强化学习自动驾驶系统
 
 - [__无人机飞行控制__](./UVA_flight_control_system.md) - 基于AirSim的无人机飞行控制系统
-
+- [__无人机飞行控制__](./drone_flight_sim/README.md) - 基于航点跟踪 + 碰撞自恢复的无人机双模式飞行控制系统
 - [__人形机器人平衡控制__](./humanoid_balance/Humanoid_Balance.md) - 基于强化学习的人形机器人平衡控制仿真
 
 - [__工程规范优化__](./improve/project.md) - 多场景仿真与控制优化项目
@@ -197,4 +197,3 @@ title: 主页
 - [__setup_tool模块汇报文档__](./setup_tool/report.md) - setup_tool 模块背景、改进内容、运行方式与效果总结
 
 - [__carla自动驾驶系统辅助监视器__](./autonomous_vehicle_monitor/monitor.md) -carla自动驾驶系统辅助器
-
