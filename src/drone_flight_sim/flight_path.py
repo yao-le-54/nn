@@ -79,16 +79,35 @@ class FlightPath:
         ]
     
     @staticmethod
-    def triangle_path(size: float = 10, height: float = -3) -> List[Tuple[float, float, float]]:
-        """生成五边形飞行路径"""
+    def polygon_path(size: float = 10, height: float = -3, sides: int = 5) -> List[Tuple[float, float, float]]:
+        """生成正多边形飞行路径
+
+        以原点为中心生成正多边形航点，默认五边形。
+
+        参数:
+            size (float): 外接圆直径（米），默认为 10
+            height (float): 飞行高度（米，负值向上），默认为 -3
+            sides (int): 多边形边数，默认为 5，最小为 3
+
+        返回:
+            List[Tuple[float, float, float]]: 航点坐标列表
+        """
+        if sides < 3:
+            raise ValueError(f"多边形边数至少为3，当前值: {sides}")
         import math
         points = []
-        for i in range(5):
-            angle = math.radians(90 + i * 72)  # 五边形，72度间隔
-            x = size / 2 + size * 0.6 * math.cos(angle)
-            y = size / 2 + size * 0.6 * math.sin(angle)
+        radius = size / 2 * 0.6
+        for i in range(sides):
+            angle = math.radians(90 + i * 360 / sides)
+            x = size / 2 + radius * math.cos(angle)
+            y = size / 2 + radius * math.sin(angle)
             points.append((x, y, height))
         return points
+
+    @staticmethod
+    def triangle_path(size: float = 10, height: float = -3) -> List[Tuple[float, float, float]]:
+        """生成三角形飞行路径（兼容旧接口，内部调用 polygon_path）"""
+        return FlightPath.polygon_path(size, height, sides=3)
     
     @staticmethod
     def custom_path(waypoints: List[Tuple[float, float, float]]) -> List[Tuple[float, float, float]]:
@@ -98,12 +117,16 @@ class FlightPath:
         适用于用户需要指定特定飞行轨迹的场景。
 
         参数:
-            waypoints (List[Tuple[float, float, float]]): 用户自定义的航点坐标列表
+            waypoints (List[Tuple[float, float, float]]): 用户自定义的航点坐标列表，至少2个点
 
         返回:
             List[Tuple[float, float, float]]: 传入的航点坐标列表（直接返回原列表）
+
+        异常:
+            ValueError: 航点数量不足时抛出
         """
-        # 直接返回用户传入的航点列表
+        if not waypoints or len(waypoints) < 2:
+            raise ValueError(f"自定义路径至少需要2个航点，当前: {len(waypoints) if waypoints else 0}")
         return waypoints
     
 
