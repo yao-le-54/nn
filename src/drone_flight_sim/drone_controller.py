@@ -230,12 +230,19 @@ class DroneController:
                 filled = int(bar_length * progress / 100)
                 bar = '█' * filled + '░' * (bar_length - filled)
                 
-                # ===== 新增：动态状态栏 =====
+                # ===== 新增：动态状态栏（含 ETA） =====
+                # 计算预计剩余时间
+                if speed > 0.1:
+                    eta_seconds = current_distance / speed
+                    eta_str = f"ETA:{eta_seconds:4.0f}s"
+                else:
+                    eta_str = "ETA: -- "
                 print(f"\r"
                       f"进度: {progress:5.1f}% [{bar}] "
                       f"距离: {current_distance:5.1f}m "
                       f"高度: {height:5.1f}m "
                       f"速度: {speed_icon} {speed:4.1f}m/s "
+                      f"{eta_str} "
                       f"碰撞: {collision_status}   ", end="")
                 
                 last_print_time = current_time

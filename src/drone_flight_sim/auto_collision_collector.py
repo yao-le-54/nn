@@ -64,8 +64,8 @@ class AutoCollisionCollector:
 
         # 如果 labels.csv 不存在，创建表头
         if not os.path.exists(self.labels_file):
-            with open(self.labels_file, 'w') as f:
-                     f.write("filename,label,risk,min_depth,mean_depth,max_depth,std_depth,x,y,z\n")
+            with open(self.labels_file, 'w', encoding='utf-8') as f:
+                f.write("filename,label,risk,min_depth,mean_depth,max_depth,std_depth,x,y,z\n")
     def connect(self):
         """连接并初始化无人机"""
         print("🔌 正在连接 AirSim...")
@@ -125,10 +125,10 @@ class AutoCollisionCollector:
             cv2.imwrite(depth_path, depth_colored)
 
             # 保存标签到 CSV
-            with open(self.labels_file, 'a') as f:
-                        f.write(f"{filename},{label},{risk_name},"
-                                f"{min_depth:.2f},{mean_depth:.2f},{max_depth:.2f},{std_depth:.2f},"
-                                f"{pos.x_val:.1f},{pos.y_val:.1f},{pos.z_val:.1f}\n")
+            with open(self.labels_file, 'a', encoding='utf-8') as f:
+                f.write(f"{filename},{label},{risk_name},"
+                        f"{min_depth:.2f},{mean_depth:.2f},{max_depth:.2f},{std_depth:.2f},"
+                        f"{pos.x_val:.1f},{pos.y_val:.1f},{pos.z_val:.1f}\n")
             if label == 0:
                 self.safe_samples += 1
             else:
@@ -550,16 +550,23 @@ class AutoCollisionCollector:
             'danger_ratio': danger_ratio
         }
     def save_collision_log(self):
+        """保存碰撞位置日志"""
         log_file = os.path.join(
             self.output_dir,
             "collision_positions.csv"
         )
 
-        with open(log_file, "w") as f:
+        if not self.collision_positions:
+            print("📋 本次采集未发生碰撞，跳过碰撞日志保存")
+            return
+
+        with open(log_file, "w", encoding='utf-8') as f:
             f.write("x,y,z\n")
 
             for x, y, z in self.collision_positions:
-                f.write(f"{x:.2f},{y:.2f},{z:.2f}\n")      
+                f.write(f"{x:.2f},{y:.2f},{z:.2f}\n")
+
+        print(f"📋 碰撞日志已保存至: {log_file} ({len(self.collision_positions)} 次碰撞)")
 
 def select_mode():
     """交互式选择飞行模式"""
@@ -603,15 +610,21 @@ def main():
         duration_input = input(f"\n采集时长(秒) [默认{duration}]: ").strip()
         if duration_input:
             duration = int(duration_input)
+            if duration <= 0:
+                print(f"⚠️ 时长必须为正数，使用默认值 {duration if duration > 0 else 180}")
+                duration = 180
     except ValueError:
-        pass
+        print(f"⚠️ 输入无效，使用默认时长 {duration} 秒")
 
     try:
         target_input = input(f"每类目标样本数 [默认{target}]: ").strip()
         if target_input:
             target = int(target_input)
+            if target <= 0:
+                print(f"⚠️ 样本数必须为正数，使用默认值 100")
+                target = 100
     except ValueError:
-        pass
+        print(f"⚠️ 输入无效，使用默认样本数 {target}")
 
     print("\n" + "=" * 50)
     print("    配置确认")
@@ -650,13 +663,24 @@ def main():
 
         stats = collector.get_stats()
         print(f"\n{'=' * 50}")
-        print("📊 采集完成！")
-        print(f"   安全样本: {stats['safe']}")
-        print(f"   危险样本: {stats['danger']}")
-        print(f"   总计: {stats['total']}")
-        print(f"   安全样本占比: {stats['safe_ratio']:.1f}%")
-        print(f"   危险样本占比: {stats['danger_ratio']:.1f}%")
-        print(f"   数据保存: {collector.labels_file}")
+        print("           📊 采集统计报告")
+        print("=" * 50)
+
+        # 安全样本进度条
+        safe_pct = stats['safe_ratio']
+        bar_len = 30
+        safe_fill = int(bar_len * safe_pct / 100)
+        safe_bar = '█' * safe_fill + '░' * (bar_len - safe_fill)
+
+        # 危险样本进度条
+        danger_pct = stats['danger_ratio']
+        danger_fill = int(bar_len * danger_pct / 100)
+        danger_bar = '█' * danger_fill + '░' * (bar_len - danger_fill)
+
+        print(f"  ✅ 安全样本: {stats['safe']:4d}  [{safe_bar}] {safe_pct:5.1f}%")
+        print(f"  💥 危险样本: {stats['danger']:4d}  [{danger_bar}] {danger_pct:5.1f}%")
+        print(f"  📦 总计样本: {stats['total']:4d}")
+        print(f"  📁 数据目录: {collector.output_dir}")
         collector.save_collision_log()
         print("=" * 50)
 
