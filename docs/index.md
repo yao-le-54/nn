@@ -106,7 +106,10 @@ title: 主页
 
 - [__基于深度学习置信度加权的自动驾驶雨天多传感器融合感知优化__](rain_sensor_fusion\DEMO_REPORT.md)
 
+- [__CARLA中的交通标志检测与车辆控制__](maintaining_sign_boards/maintaining_sign_boards.md) - CARLA中的交通标志检测与车辆控制
 
+
+[_交通拥堵仿真与智能调控_](./lidar_project/README.md) - 基于 CARLA 与强化学习的多模型融合交通拥堵仿真与智能调控系统
 
 ## 规划 <span id="planning"></span>
 
@@ -134,7 +137,7 @@ title: 主页
 
 - [__人形机器人SAC强化学习步态优化__](./mujoco_running/running.md) - 基于CPG+PD+SAC残差强化学习的缓步稳定行走仿真
 
-
+- [__GraspRL机械臂抓取强化学习项目__](./index_wk.md) - 基于DQN与MuJoCo的视觉机械臂抓取仿真项目
 
 ## 控制 <span id="control"></span>
 
